@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Test from './Test';
+import Dashboard from './pages/Dashboard';
+import Side from './Side';
+import Consultant from './pages/Consultant';
 
 function App() {
+
+  const [dark, setDark] = useState(false);
+
+  const darkModeHandler = () => {
+      setDark(!dark);
+      document.body.classList.toggle("dark");
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Side darkModeHandler= {darkModeHandler} dark = {dark}/>
+      <Routes>
+        <Route path='/' element={<Test />}/>
+        <Route path='/dashboard' element={<Dashboard />}/>
+        <Route path='/consultant' element={<Consultant />}/>
+      </Routes>
     </div>
   );
 }
