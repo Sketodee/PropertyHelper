@@ -12,9 +12,13 @@ const ConsultantList = () => {
     const indexOfLastCustomer = currentPage * customersPerPage;
     const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
     const currentCustomers = customerData.slice(indexOfFirstCustomer, indexOfLastCustomer);
+     const shouldPaginate = totalCount < (currentPage - 1) * 10 
 
     // Change page
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const paginate = (pageNumber) =>{
+        setCurrentPage(pageNumber);
+        // console.log(totalCount < (pageNumber - 1) * 10 )
+    } 
     const next = () => {
         // setCurrentPage(prev => prev + 1)
         if (totalCount > ((batch + 1) * 100)) {
@@ -80,10 +84,13 @@ const ConsultantList = () => {
                     </div>
                     <div class="flex">
                         {[...Array(10)].map((_, index) => (
-                            <p key={index} onClick={() => paginate(index + 1 + (10 * batch))}
-                                class={`leading-none cursor-pointer pt-3 mr-0 sm:mr-4 px-1 sm:px-0 hover:text-customPrimary hover:font-bold ${currentPage === index + 1 + (10 * batch) ? ' text-customPrimary text:xs sm:text-base font-light sm:font-bold' : 'text-xs sm:text-sm font-light text-gray-600'}`}>
+                            <button disabled={totalCount < ( index + (10 * batch)) * 10}  key={index} onClick={() => paginate(index + 1 + (10 * batch))}
+                                class={`leading-none cursor-pointer pt-3 mr-0 sm:mr-4 px-1 sm:px-0
+                                ${currentPage === index + 1 + (10 * batch) ? ' text-customPrimary text:xs sm:text-base font-light sm:font-bold' : 'text-xs sm:text-sm font-light'}
+                                ${totalCount < ( index + (10 * batch)) * 10 ? 'text-gray-400' : ' hover:text-customPrimary hover:font-bold '}
+                                `}>
                                 {index + 1 + (10 * batch)}
-                            </p>
+                            </button>
                         ))}
                     </div>
                     <div onClick={next} class="flex items-center pt-3 text-gray-600 hover:text-indigo-700 cursor-pointer">
