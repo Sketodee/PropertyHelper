@@ -12,7 +12,6 @@ const ConsultantList = () => {
     const indexOfLastCustomer = currentPage * customersPerPage;
     const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
     const currentCustomers = customerData.slice(indexOfFirstCustomer, indexOfLastCustomer);
-     const shouldPaginate = totalCount < (currentPage - 1) * 10 
 
     // Change page
     const paginate = (pageNumber) =>{
