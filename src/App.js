@@ -4,6 +4,7 @@ import Test from './Test';
 import Dashboard from './pages/Dashboard';
 import Side from './Side';
 import Consultant from './pages/Consultant';
+import Client from './pages/Client';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
         <Route path='/' element={<Test />}/>
         <Route path='/dashboard' element={<Dashboard />}/>
         <Route path='/consultant' element={<Consultant />}/>
+        <Route path='/client' element={<Client />}/>
       </Routes>
     </div>
   );
