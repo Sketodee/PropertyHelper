@@ -1,4 +1,6 @@
 import React from 'react'
+import ConsultantPills from '../components/consultant/ConsultantPills'
+import ConsultantList from '../components/consultant/ConsultantList'
 
 const Consultant = () => {
   return (
@@ -6,6 +8,8 @@ const Consultant = () => {
     <div className="bg-white py-3 rounded-md shadow mb-6">
       <p className='px-3 text-2xl font-medium text-customPrimary  '> Consultants  </p>
     </div>
+    <ConsultantPills />
+    <ConsultantList /> 
 </div>
   )
 }

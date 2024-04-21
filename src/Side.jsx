@@ -20,6 +20,7 @@ function SideNavbar({darkModeHandler, dark}) {
   const [modalOpen, setModalOpen] = useState(false)
   const test = () => {
     setModalOpen(!modalOpen)
+    // setTimeout(() => setModalOpen(false), 1000);
   }
   return (
     <div className="helvetica">
@@ -29,8 +30,8 @@ function SideNavbar({darkModeHandler, dark}) {
           <GiHamburgerMenu className="block lg:hidden h-6 w-6 z-50" aria-hidden="true"/>
         }
         </div>
-      <div className= {` ${modalOpen ? '' : 'hidden lg:block'}`}>
-        <div onClick= {()=> setModalOpen(!modalOpen)} className="overflow-y-auto p-6 w-1/2 h-screen z-20 fixed top-0 lg:left-0 md:w-1/3 lg:w-1/6 peer-focus:left-0 peer:transition ease-out delay-250 duration-300 bg-white dark:bg-blue-900 border-r-2 border-gray-100">
+      <div className= {` ${modalOpen ? 'transition-colors duration-1000 bg-blue-500' : 'hidden lg:block'}`}>
+        <div onClick= {()=> setModalOpen(!modalOpen)} className="overflow-y-auto p-6 w-1/2 h-screen z-20 fixed top-0 lg:left-0 md:w-1/3 lg:w-1/6 peer-focus:left-0 peer:transition ease-out delay-250 duration-1000 bg-white dark:bg-blue-900 border-r-2 border-gray-100">
           <div className="flex flex-col justify-start item-center">
             <h1 className="text-1xl lg:text-2xl cursor-pointer font-bold text-blue-500 border-b border-gray-100 pb-4 w-full sora">
               Estate Helper
