@@ -31,12 +31,6 @@ body {
   font-family: 'Helvetica Neue', sans-serif;
 }
 
-.nunito {
-  font-family: "Nunito", sans-serif;
-  /* font-optical-sizing: auto;
-  font-weight: 300; */
-}
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
