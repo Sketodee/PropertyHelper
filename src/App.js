@@ -19,8 +19,8 @@ function App() {
     <div>
       <Side darkModeHandler= {darkModeHandler} dark = {dark}/>
       <Routes>
-        <Route path='/' element={<Test />}/>
-        <Route path='/dashboard' element={<Dashboard />}/>
+        {/* <Route path='/' element={<Test />}/> */}
+        <Route path='/' element={<Dashboard />}/>
         <Route path='/consultant' element={<Consultant />}/>
         <Route path='/client' element={<Client />}/>
       </Routes>
