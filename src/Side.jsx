@@ -37,7 +37,7 @@ function SideNavbar({darkModeHandler, dark}) {
               Estate Helper
             </h1>
             <div className=" my-3 border-b border-gray-100 pb-4">
-              <Link to={`/dashboard`} className="flex py-3 mb-2 justify-start items-center gap-4 pl-5 hover:bg-blue-200 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+              <Link to={`/`} className="flex py-3 mb-2 justify-start items-center gap-4 pl-5 hover:bg-blue-200 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                 <MdOutlineSpaceDashboard className="text-2xl text-blue-600 group-hover:text-white " />
                 <h3 className="text-base text-gray-500 group-hover:text-blue-500 font-normal">
                   Dashboard
@@ -46,7 +46,7 @@ function SideNavbar({darkModeHandler, dark}) {
               <div className="flex py-3 mb-2 justify-start items-center gap-4 pl-5 hover:bg-blue-200 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                 <CgProfile className="text-2xl text-blue-600 group-hover:text-white " />
                 <h3 className="text-base text-gray-500 group-hover:text-blue-500 font-normal">
-                  Properties
+                  Products
                 </h3>
               </div>
               <Link to={`/consultant`} className="flex py-3 mb-2 justify-start items-center gap-4 pl-5 hover:bg-blue-200 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
@@ -55,10 +55,22 @@ function SideNavbar({darkModeHandler, dark}) {
                   Consultants
                 </h3>
               </Link>
+              <Link to={`/consultant`} className="flex py-3 mb-2 justify-start items-center gap-4 pl-5 hover:bg-blue-200 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                <FaRegComments className="text-2xl text-blue-600 group-hover:text-white " />
+                <h3 className="text-base text-gray-500 group-hover:text-blue-500 font-normal">
+                  Consultant Groups
+                </h3>
+              </Link>
               <Link to={`/client`} className="flex py-3 mb-2 justify-start items-center gap-4 pl-5 hover:bg-blue-200 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                 <MdOutlineAnalytics className="text-2xl text-blue-600 group-hover:text-white " />
                 <h3 className="text-base text-gray-500 group-hover:text-blue-500 font-normal">
                   Clients
+                </h3>
+              </Link>
+              <Link to={`/client`} className="flex py-3 mb-2 justify-start items-center gap-4 pl-5 hover:bg-blue-200 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                <MdOutlineAnalytics className="text-2xl text-blue-600 group-hover:text-white " />
+                <h3 className="text-base text-gray-500 group-hover:text-blue-500 font-normal">
+                  Account
                 </h3>
               </Link>
               <div className="flex py-3 mb-2 justify-start items-center gap-4 pl-5 hover:bg-blue-200 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
@@ -70,7 +82,7 @@ function SideNavbar({darkModeHandler, dark}) {
               <div className="flex py-3 mb-2 justify-start items-center gap-4 pl-5 hover:bg-blue-200 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                 <MdOutlineIntegrationInstructions className="text-2xl text-blue-600 group-hover:text-white " />
                 <h3 className="text-base text-gray-500 group-hover:text-blue-500 font-normal">
-                  Analytics
+                  Self Service
                 </h3>
               </div>
             </div>

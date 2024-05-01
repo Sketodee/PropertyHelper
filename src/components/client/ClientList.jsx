@@ -4,14 +4,30 @@ import dummydata from '../consultant/dumydata';
 const ClientList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [batch, setBatch] = useState(0)
+    const [searchQuery, setSearchQuery] = useState('')
+
+
     const customersPerPage = 10;
     const customerData = dummydata.slice(0, 143)
-    const totalCount = customerData.length
+    
+    const handleSearchChange = (event) => {
+        setCurrentPage(1)
+        setBatch(0)
+        setSearchQuery(event.target.value);
+    };
+
+    const filteredConsultants = customerData.filter(consultant =>
+        consultant.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const totalCount = filteredConsultants.length
+
 
     // Get current customers
     const indexOfLastCustomer = currentPage * customersPerPage;
     const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
-    const currentCustomers = customerData.slice(indexOfFirstCustomer, indexOfLastCustomer);
+    // const currentCustomers = customerData.slice(indexOfFirstCustomer, indexOfLastCustomer);
+    const currentCustomers = filteredConsultants.slice(indexOfFirstCustomer, indexOfLastCustomer);
 
     // Change page
     const paginate = (pageNumber) =>{
@@ -39,6 +55,16 @@ const ClientList = () => {
 
                 <div className="bg-white py-3 rounded-md shadow mb-6 px-3">
                     <p className='text-customPrimary font-medium text-base '> All Clients </p>
+
+                    <form className="max-w mx-auto">
+                        <label htmlFor="default-search" className="text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                        <div className="relative py-3">
+                            <input type="search" id="default-search" value={searchQuery} onChange={handleSearchChange} className="block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Consultants..." required />
+                            {/* <button type="submit" onClick={handleSearchChange} className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button> */}
+                        </div>
+                    </form>
+
+                    
                     <div className="flex flex-col">
                         <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
