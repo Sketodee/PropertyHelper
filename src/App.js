@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Test from './Test';
 import Dashboard from './pages/Dashboard';
 import Side from './Side';
 import Consultant from './pages/Consultant';
