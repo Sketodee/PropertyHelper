@@ -1,28 +1,27 @@
 import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
-import Side from './Side';
 import Consultant from './pages/Consultant';
 import Client from './pages/Client';
+import Home from './pages/Home';
+import Layout from './pages/Layout';
 
 function App() {
 
-  const [dark, setDark] = useState(false);
-
-  const darkModeHandler = () => {
-      setDark(!dark);
-      document.body.classList.toggle("dark");
-  }
-
   return (
     <div>
-      <Side darkModeHandler= {darkModeHandler} dark = {dark}/>
       <Routes>
-        {/* <Route path='/' element={<Test />}/> */}
-        <Route path='/' element={<Dashboard />}/>
-        <Route path='/consultant' element={<Consultant />}/>
-        <Route path='/client' element={<Client />}/>
+        <Route path='/' element={<Home />} />
+        <Route path='/dashboard' element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path='/dashboard/consultant' element={<Consultant />} />
+            <Route path='/dashboard/client' element={<Client />} />
+        </Route>
       </Routes>
+
+
+      {/* <Side darkModeHandler= {darkModeHandler} dark = {dark}/> */}
+
     </div>
   );
 }
