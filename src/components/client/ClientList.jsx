@@ -99,15 +99,15 @@ const ClientList = () => {
 
 
 
-            <div class="flex items-center justify-center py-4 px-1">
-                <div class="w-full sm:w-3/5 flex items-center justify-between">
-                    <div onClick={previous} class="flex items-center pt-3 text-gray-600 hover:text-indigo-700 cursor-pointer">
-                        <p class="text-sm sm:text-xs ml-3 font-light leading-none ">Prev</p>
+            <div className="flex items-center justify-center py-4 px-1">
+                <div className="w-full sm:w-3/5 flex items-center justify-between">
+                    <div onClick={previous} className="flex items-center pt-3 text-gray-600 hover:text-indigo-700 cursor-pointer">
+                        <p className="text-sm sm:text-xs ml-3 font-light leading-none ">Prev</p>
                     </div>
-                    <div class="flex">
+                    <div className="flex">
                         {[...Array(10)].map((_, index) => (
                             <button disabled={totalCount < ( index + (10 * batch)) * 10}  key={index} onClick={() => paginate(index + 1 + (10 * batch))}
-                                class={`leading-none cursor-pointer pt-3 mr-0 sm:mr-4 px-1 sm:px-0
+                                className={`leading-none cursor-pointer pt-3 mr-0 sm:mr-4 px-1 sm:px-0
                                 ${currentPage === index + 1 + (10 * batch) ? ' text-customPrimary text:xs sm:text-base font-bold sm:font-bold' : 'text-xs sm:text-sm font-light'}
                                 ${totalCount < ( index + (10 * batch)) * 10 ? 'text-gray-400' : ' hover:text-customPrimary hover:font-bold '}
                                 `}>
@@ -115,8 +115,8 @@ const ClientList = () => {
                             </button>
                         ))}
                     </div>
-                    <div onClick={next} class="flex items-center pt-3 text-gray-600 hover:text-indigo-700 cursor-pointer">
-                        <p class="text-sm font-light leading-none mr-3">Next</p>
+                    <div onClick={next} className="flex items-center pt-3 text-gray-600 hover:text-indigo-700 cursor-pointer">
+                        <p className="text-sm font-light leading-none mr-3">Next</p>
 
                     </div>
                 </div>

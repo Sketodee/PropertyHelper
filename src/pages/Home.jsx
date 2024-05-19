@@ -21,7 +21,7 @@ const Home = () => {
             <div className='flex flex-row items-center justify-between'>
                 <div className='basis-1/2 hidden md:flex items-center justify-center py-20 px-20'>
                     <div className='w-96 '>
-                        <img className='h-full w-full rounded-br-[200px]' src="/assets/2149661457.jpg" alt="" />
+                        <img className='h-full w-full rounded-br-[200px]' src="/assets/2149661457-min.jpg" alt="" />
                     </div>
                 </div>
                 <div className='basis-full sm:basis-1/2 py-md-10 px-md-20 py-2 px-6 '>
