@@ -1,16 +1,18 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../features/auth/authSlice';
-import { useLoginMutation } from '../../features/auth/authApiSlice';
+import { useLoginMutation, useTestMutation } from '../../features/auth/authApiSlice';
+
 
 
 const Login = () => {
 
     const navigate = useNavigate()
 
-    const [login, {isLoading}] = useLoginMutation()
+    const [login, { isLoading }] = useLoginMutation()
+    const [test] = useTestMutation()
     const dispatch = useDispatch()
 
     const [formData, setFormData] = useState({
@@ -39,13 +41,19 @@ const Login = () => {
     const validate = () => {
         const newErrors = {};
         if (!formData.password) {
-            newErrors.passworda = 'Password is required';
+            newErrors.password = 'Password is required';
         }
         if (!formData.email) {
             newErrors.email = 'Email is required';
         }
         return newErrors;
     };
+
+    // const testClick = async (e) => {
+    //     const result = await test().unwrap()
+    //     dispatch(setCredentials({ ...result, accessToken: result.data }))
+    //     console.log(result);
+    // }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -55,7 +63,7 @@ const Login = () => {
         } else {
             try {
                 const userData = await login(formData).unwrap()
-                dispatch(setCredentials({...userData, user: userData.data.user, accessToken: userData.data.token} ))
+                dispatch(setCredentials({ ...userData, user: userData.data.user, accessToken: userData.data.token }))
                 setFormData({
                     email: '',
                     password: '',
@@ -106,6 +114,7 @@ const Login = () => {
                 </div>
 
             </form>
+            
         </div>
     );
 };

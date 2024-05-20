@@ -10,9 +10,18 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 body: {...credentials}, 
             })
         }), 
+        test: builder.mutation({
+            query: () => ({
+                url: '/Auth/GetRefreshToken', 
+                method: 'GET',
+                credentials: 'include', 
+                // body: {...credentials}, 
+            })
+        }), 
     })
 })
 
 export const {
-    useLoginMutation
+    useLoginMutation,
+    useTestMutation
 } = authApiSlice
