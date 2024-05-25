@@ -3,17 +3,19 @@ import { useNavigate } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../features/auth/authSlice';
-import { useLoginMutation, useTestMutation } from '../../features/auth/authApiSlice';
+import { useLoginMutation } from '../../features/auth/authApiSlice';
+
+import usePersist from '../../hooks/usePersist'
 
 
 
 const Login = () => {
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const [login, { isLoading }] = useLoginMutation()
-    const [test] = useTestMutation()
-    const dispatch = useDispatch()
+    const [persist, setPersist] = usePersist()
 
     const [formData, setFormData] = useState({
         email: '',
@@ -49,12 +51,6 @@ const Login = () => {
         return newErrors;
     };
 
-    // const testClick = async (e) => {
-    //     const result = await test().unwrap()
-    //     dispatch(setCredentials({ ...result, accessToken: result.data }))
-    //     console.log(result);
-    // }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const validationErrors = validate();
@@ -74,6 +70,8 @@ const Login = () => {
             }
         }
     };
+
+    const handleToggle = () => setPersist(prev => !prev)
 
     return (
         <div className=''>
@@ -107,6 +105,15 @@ const Login = () => {
                     {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
                 </div>
 
+                <div className="relative flex gap-x-3">
+                    <div className="flex h-6 items-center">
+                        <input onChange={handleToggle} checked={persist} id="persist" name="persist" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                    </div>
+                    <div className="text-sm leading-6">
+                        <label htmlFor="persist" className="font-sm text-gray-500">Remember Me</label>
+                    </div>
+                </div>
+
                 <div className="py-2 ">
                     <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md">
                         Submit
@@ -114,7 +121,7 @@ const Login = () => {
                 </div>
 
             </form>
-            
+
         </div>
     );
 };

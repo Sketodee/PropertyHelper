@@ -21,16 +21,15 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
         console.log('sending refresh token')
         //send refresh token to get new access token
         const refreshResult = await baseQuery('/Auth/GetRefreshToken', api, extraOptions) //the refresh here is the endpoint that refresh token on the backend 
-        console.log(refreshResult)
-        if(refreshResult?.data) {
+        if(refreshResult?.data?.data) {
             const user = api.getState().auth.user
             //store the new token
-            // api.dispatch(setCredentials({...refreshResult.data, user}))
-            api.dispatch(setCredentials({accessToken: refreshResult.data, user}))
+            api.dispatch(setCredentials({accessToken: refreshResult.data.data, user}))
             //retry the original query with new access token
             result = await baseQuery(args, api, extraOptions)
         } else {
             api.dispatch(logOut())
+            console.log("you've been logged out")
         }
     }
     return result 
