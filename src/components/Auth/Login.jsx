@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../features/auth/authSlice';
@@ -12,6 +12,7 @@ import usePersist from '../../hooks/usePersist'
 const Login = () => {
 
     const navigate = useNavigate()
+    const location = useLocation()
     const dispatch = useDispatch()
 
     const [login, { isLoading }] = useLoginMutation()
@@ -64,7 +65,7 @@ const Login = () => {
                     email: '',
                     password: '',
                 });
-                navigate('/dashboard')
+                navigate('/dashboard', { state: { from: location } })
             } catch (error) {
                 console.log("Login failed")
             }
@@ -105,14 +106,14 @@ const Login = () => {
                     {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
                 </div>
 
-                <div className="relative flex gap-x-3">
+                {/* <div className="relative flex gap-x-3">
                     <div className="flex h-6 items-center">
                         <input onChange={handleToggle} checked={persist} id="persist" name="persist" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
                     </div>
                     <div className="text-sm leading-6">
                         <label htmlFor="persist" className="font-sm text-gray-500">Remember Me</label>
                     </div>
-                </div>
+                </div> */}
 
                 <div className="py-2 ">
                     <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md">

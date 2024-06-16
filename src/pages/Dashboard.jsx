@@ -1,41 +1,15 @@
-import React, {useState, useEffect} from 'react'
 import Pills from '../components/dashboard/Pills'
 import TopProducts from '../components/dashboard/TopProducts'
 import TopConsultantByDownline from '../components/dashboard/TopConsultantByDownline'
 import TopConsultantBySales from '../components/dashboard/TopConsultantBySales'
 import Activities from '../components/dashboard/Activities'
-import { selectCurrentUser } from '../features/auth/authSlice'
+import { selectCurrentUser} from '../features/auth/authSlice'
 import { useSelector } from 'react-redux'
-import { useGetuserMutation} from '../features/auth/authApiSlice'
+
 
 
 const Dashboard = () => {
   const user = useSelector(selectCurrentUser)
-  const [myname, setMyname] = useState("")
-  const [getMe] = useGetuserMutation()
-
-  // useEffect(() => {
-  //   const u = async () => await getMe().unwrap()
-  //     console.log(u())
-  // }, [])
-  
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const userResponse = await getMe().unwrap();
-        console.log(userResponse);
-        // setUserName(userResponse.userName);
-      } catch (error) {
-        console.error('Failed to fetch user:', error);
-        // setUserName('Guest');
-      }
-    };
-
-    if (myname === '') {
-      fetchUserData();
-    }
-  }, [myname]);
-
 
   return (
     <div  className= "overflow-y-auto p-4 w-full  lg:w-5/6 bg-gray-100  absolute right-0 h-screen satoshi">

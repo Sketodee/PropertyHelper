@@ -4,8 +4,8 @@ import { PiUsersThreeFill } from "react-icons/pi";
 
 const ConsultantPills = () => {
     return (
-        <div className="bg-white py-3 rounded-md shadow mb-6 px-3">
-            <p className='text-customPrimary font-medium text-base '>Consultant Summary</p>
+        <div className="bg-white dark:bg-gray-800 py-3 rounded-md shadow mb-6 px-3">
+            <p className='text-customPrimary dark:text-white font-medium text-base '>Consultant Summary</p>
             <p className='text-xs text-gray-400 pb-6'>Today's Summary</p>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4 ">
 

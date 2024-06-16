@@ -7,9 +7,6 @@ import {useState } from "react";
 
 
 const RequireAuth = () => {
-    let token = useSelector(selectCurrentToken)
-    const location = useLocation()
-
 
     const [dark, setDark] = useState(false);
 
