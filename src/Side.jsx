@@ -43,12 +43,12 @@ function SideNavbar({darkModeHandler, dark}) {
                   Dashboard
                 </h3>
               </Link>
-              <div className="flex py-3 mb-2 justify-start items-center gap-4 pl-5 hover:bg-blue-200 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+              <Link to={`/dashboard/product`} className="flex py-3 mb-2 justify-start items-center gap-4 pl-5 hover:bg-blue-200 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                 <CgProfile className="text-2xl text-blue-600 group-hover:text-white " />
                 <h3 className="text-base text-gray-500 group-hover:text-blue-500 font-normal">
                   Products
                 </h3>
-              </div>
+              </Link>
               <Link to={`/dashboard/consultant`} className="flex py-3 mb-2 justify-start items-center gap-4 pl-5 hover:bg-blue-200 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                 <FaRegComments className="text-2xl text-blue-600 group-hover:text-white " />
                 <h3 className="text-base text-gray-500 group-hover:text-blue-500 font-normal">
