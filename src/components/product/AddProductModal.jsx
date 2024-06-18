@@ -7,26 +7,68 @@ const AddProductModal = ({ isOpen, closeModal }) => {
     const [formData, setFormData] = useState({
         name: '',
         location: '',
-        description: ''
+        description: '',
+        size: '',
+        isAvailable: "true", //set default value to Yes
+        pricing: {
+            price: '',
+            survey: '',
+            development: '',
+            unit: '0' //set the default value to squaremeter
+        }
     });
 
     const [errors, setErrors] = useState({
         name: '',
         location: '',
         images: '',
-        description: ''
+        description: '',
+        size: '',
+        isAvailable: '',
+        pricing: {
+            price: '',
+            survey: '',
+            development: '',
+            unit: ''
+        }
     });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-        setErrors({
-            ...errors,
-            [name]: ''
-        });
+        const [field, subField] = name.split('.');
+        if (subField) {
+            setFormData(prevState => ({
+                ...prevState,
+                [field]: {
+                    ...prevState[field],
+                    [subField]: value
+                }
+            }));
+            setErrors(prevState => ({
+                ...prevState,
+                [field]: {
+                    ...prevState[field],
+                    [subField]: ''
+                }
+            }))
+        } else {
+            setFormData(prevState => ({
+                ...prevState,
+                [name]: value
+            }));
+            setErrors(prevState => ({
+                ...prevState,
+                [name]: ''
+            }))
+        }
+        // setFormData({
+        //     ...formData,
+        //     [name]: value
+        // });
+        // setErrors({
+        //     ...errors,
+        //     [name]: ''
+        // });
     };
 
     const validate = () => {
@@ -40,8 +82,41 @@ const AddProductModal = ({ isOpen, closeModal }) => {
         if (!formData.description) {
             newErrors.description = "Description is required"
         }
-        if (imageUrls.length == 0) {
-            newErrors.images = "Please select at least one image"
+        if (!formData.isAvailable) {
+            newErrors.isAvailable = "Required"
+        }
+        // if (imageUrls.length == 0) {
+        //     newErrors.images = "Please select at least one image"
+        // }
+        if (!formData.size) {
+            newErrors.size = 'Size is required';
+        } else if (/[^0-9]/.test(formData.size)) {
+            newErrors.size = 'Field should contain only digits';
+        }
+        if (!formData.pricing.survey) {
+            newErrors.pricing = newErrors.pricing || {};
+            newErrors.pricing.survey = 'Survey pricing is required';
+        } else if (/[^0-9]/.test(formData.pricing.survey)) {
+            newErrors.pricing = newErrors.pricing || {};
+            newErrors.pricing.survey = 'Field should contain only digits';
+        }
+        if (!formData.pricing.price) {
+            newErrors.pricing = newErrors.pricing || {};
+            newErrors.pricing.price = 'Price is required';
+        } else if (/[^0-9]/.test(formData.pricing.price)) {
+            newErrors.pricing = newErrors.pricing || {};
+            newErrors.pricing.price = 'Field should contain only digits';
+        }
+        if (!formData.pricing.unit) {
+            newErrors.pricing = newErrors.pricing || {};
+            newErrors.pricing.unit = 'Unit is required';
+        }
+        if (!formData.pricing.development) {
+            newErrors.pricing = newErrors.pricing || {};
+            newErrors.pricing.development = 'Development pricing is required';
+        } else if (/[^0-9]/.test(formData.pricing.development)) {
+            newErrors.pricing = newErrors.pricing || {};
+            newErrors.pricing.development = 'Field should contain only digits';
         }
         console.log(newErrors)
         return newErrors;
@@ -83,16 +158,18 @@ const AddProductModal = ({ isOpen, closeModal }) => {
         }
     }
 
-    const clearAllKeys = (arr) => {
-        return arr.map(item => {
-            const newItem = {};
-            for (const key in item) {
-                if (item.hasOwnProperty(key)) {
-                    newItem[key] = '';
-                }
+    const clearFormData = (data) => {
+        const newData = {};
+    
+        Object.keys(data).forEach(key => {
+            if (typeof data[key] === 'object' && data[key] !== null) {
+                newData[key] = clearFormData(data[key]); // Recursively clear nested objects
+            } else {
+                newData[key] = ''; // Set to empty string
             }
-            return newItem;
         });
+    
+        return newData;
     };
 
     const handleSubmit = (e) => {
@@ -107,110 +184,149 @@ const AddProductModal = ({ isOpen, closeModal }) => {
             // Process form data
             console.log(submittedData);
             // Reset form
-            const updatedFormData = clearAllKeys(formData);
+            const updatedFormData = clearFormData(formData);
             setFormData(updatedFormData);
-            // setFormData({
-            //     name: '',
-            //     location: '', 
-            //     description: ''
-            // });
         }
     };
 
     return (
         <Modal isOpen={isOpen} onClose={closeModal}>
-            <h2 className="text-xl font-bold py-2">Add Product</h2>
+            <h2 className="text-xl font-medium py-2">Add Product</h2>
             <hr className="pb-2" />
 
             <form onSubmit={handleSubmit} >
 
                 <div className='flex justify-between'>
                     <div className="py-2 pe-2 basis-1/2">
-                        <label htmlFor="name" className="block text-sm text-gray-700">Name</label>
+                        <label htmlFor="name" className="block text-sm  text-gray-700 dark:text-gray-300">Name</label>
                         <input
                             type="text"
                             id="name"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-sm focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                         />
                         {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                     </div>
 
                     <div className="py-2 ps-2 basis-1/2">
-                        <label htmlFor="location" className="block text-sm text-gray-700">Location</label>
+                        <label htmlFor="location" className="block text-sm text-gray-700 dark:text-gray-300">Location</label>
                         <input
                             type="text"
                             id="location"
                             name="location"
                             value={formData.location}
                             onChange={handleChange}
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                           className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-sm focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                         />
                         {errors.location && <p className="text-red-500 text-xs mt-1">{errors.location}</p>}
                     </div>
                 </div>
 
                 <div className='flex justify-between'>
-                    <div className="py-2 pe-2 basis-1/4">
-                        <label htmlFor="price" className="block text-sm text-gray-700">Price</label>
+                    <div className="py-2 pe-2 basis-1/3">
+                        <label htmlFor="price" className="block text-sm text-gray-700 dark:text-gray-300">Price</label>
                         <input
                             type="text"
                             id="price"
-                            name="price"
-                            value={formData.price}
+                            name="pricing.price"
+                            value={formData.pricing.price}
                             onChange={handleChange}
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                           className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-sm focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                         />
-                        {errors.price && <p className="text-red-500 text-xs mt-1">{errors.price}</p>}
+                        {errors.pricing?.price && <p className="text-red-500 text-xs mt-1">{errors.pricing?.price}</p>}
                     </div>
 
-                    <div className="py-2 pe-2 basis-1/4">
-                        <label htmlFor="survey" className="block text-sm text-gray-700">Survey</label>
+                    <div className="py-2 pe-2 basis-1/3">
+                        <label htmlFor="survey" className="block text-sm text-gray-700 dark:text-gray-300">Survey</label>
                         <input
                             type="text"
                             id="survey"
-                            name="survey"
-                            value={formData.survey}
+                            name="pricing.survey"
+                            value={formData.pricing.survey}
                             onChange={handleChange}
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                           className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-sm focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                         />
-                        {errors.survey && <p className="text-red-500 text-xs mt-1">{errors.survey}</p>}
+                        {errors.pricing?.survey && <p className="text-red-500 text-xs mt-1">{errors.pricing?.survey}</p>}
                     </div>
 
-                    <div className="py-2 ps-2 basis-1/4">
-                        <label htmlFor="development" className="block text-sm text-gray-700">Development</label>
+                    <div className="py-2 basis-1/3">
+                        <label htmlFor="development" className="block text-sm text-gray-700 dark:text-gray-300">Development</label>
                         <input
                             type="text"
                             id="development"
-                            name="development"
-                            value={formData.development}
+                            name="pricing.development"
+                            value={formData.pricing.development}
                             onChange={handleChange}
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-sm focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                         />
-                        {errors.development && <p className="text-red-500 text-xs mt-1">{errors.development}</p>}
+                        {errors.pricing?.development && <p className="text-red-500 text-xs mt-1">{errors.pricing?.development}</p>}
+                    </div>
+                </div>
+
+                <div className="flex justify-between">
+                    <div className="py-2 ps-2 basis-1/3">
+                        <label htmlFor="size" className="block text-sm text-gray-700 dark:text-gray-300">Size</label>
+                        <input
+                            type="text"
+                            id="size"
+                            name="size"
+                            value={formData.size}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-sm focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+                        />
+                        {errors.size && <p className="text-red-500 text-xs mt-1">{errors.size}</p>}
                     </div>
 
-                    <div className="py-2 ps-2 basis-1/4">
-                        <label htmlFor="unit" className="block text-sm text-gray-700">Unit</label>
+                    <div className="py-2 ps-2 basis-1/3">
+                        <label htmlFor="unit" className="block text-sm text-gray-700 dark:text-gray-300">Unit</label>
                         <select
                             id="unit"
-                            name="unit"
-                            value={formData.unit}
+                            name="pricing.unit"
+                            value={formData.pricing.unit}
                             onChange={handleChange}
-                            className="mt-1 block w-full px-3 py-2 border border-blue-300 rounded-md"
+                           className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-sm focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                         >
                             {/* <option value="">Select gender</option> */}
-                            <option  value="0">SquareMeter</option>
+                            <option value="0">SquareMeter</option>
                             <option value="1">Plot</option>
                         </select>
-                        {errors.unit && <p className="text-red-500 text-xs mt-1">{errors.unit}</p>}
+                        {errors.pricing?.unit && <p className="text-red-500 text-xs mt-1">{errors.pricing?.unit}</p>}
+                    </div>
+
+                    <div className="py-2 ps-6 basis-1/3">
+                        <label className="block text-sm text-gray-700 dark:text-gray-300">isAvailable</label>
+                        <div className="mt-3">
+                            <label className="inline-flex items-center">
+                                <input
+                                    type="radio"
+                                    name="isAvailable"
+                                    value="true"
+                                    checked={formData.isAvailable === 'true'}
+                                    onChange={handleChange}
+                                    className="form-radio text-blue-500"
+                                />
+                                <span className="ml-2">Yes</span>
+                            </label>
+                            <label className="inline-flex items-center ml-6">
+                                <input
+                                    type="radio"
+                                    name="isAvailable"
+                                    value="false"
+                                    checked={formData.isAvailable === 'false'}
+                                    onChange={handleChange}
+                                    className="form-radio text-blue-500"
+                                />
+                                <span className="ml-2">No</span>
+                            </label>
+                        </div>
+                        {errors.isAvailable && <p className="text-red-500 text-xs mt-1">{errors.isAvailable}</p>}
                     </div>
                 </div>
 
                 <div className="py-2">
-                    <label htmlFor="description" className="block text-sm text-gray-700">Description</label>
+                    <label htmlFor="description" className="block text-sm text-gray-700 dark:text-gray-300">Description</label>
                     <textarea
                         rows={5}
                         type="text"
@@ -218,13 +334,13 @@ const AddProductModal = ({ isOpen, closeModal }) => {
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-sm focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                     />
                     {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
                 </div>
 
                 <div className="py-2 ">
-                    <label htmlFor="images" className="block text-sm text-gray-700">Images</label>
+                    <label htmlFor="images" className="block text-sm text-gray-700 dark:text-gray-300">Images</label>
                     <input
                         type="file"
                         id="images"
@@ -235,7 +351,8 @@ const AddProductModal = ({ isOpen, closeModal }) => {
                             const selectedFiles = event.currentTarget.files
                             await handleFileChange(selectedFiles)
                         }}
-                        className="mt-1 block w-full px-3 border border-gray-300 rounded-sm file:bg-blue-100 file:text-blue-700 file:rounded-full file:border-0 file:py-2 file:px-4 hover:file:bg-blue-200"
+                        className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-sm focus:outline-none focus:border-blue-500 dark:file:bg-gray-300 file:bg-blue-100 file:text-blue-700 file:rounded-full file:border-0 file:py-2 file:px-4 
+                        hover:file:bg-blue-200 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                     />
                     {errors.images && <p className="text-red-500 text-xs mt-1">{errors.images}</p>}
                 </div>
