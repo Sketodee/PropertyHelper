@@ -85,9 +85,9 @@ const AddProductModal = ({ isOpen, closeModal }) => {
         if (!formData.isAvailable) {
             newErrors.isAvailable = "Required"
         }
-        // if (imageUrls.length == 0) {
-        //     newErrors.images = "Please select at least one image"
-        // }
+        if (imageUrls.length == 0) {
+            newErrors.images = "Please select at least one image"
+        }
         if (!formData.size) {
             newErrors.size = 'Size is required';
         } else if (/[^0-9]/.test(formData.size)) {

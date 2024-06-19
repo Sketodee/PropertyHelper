@@ -39,11 +39,28 @@ export const productApiSlice = apiSlice.injectEndpoints({
                     console.log(error)
                 }
             }
+        }),
+
+        addProduct : builder.mutation({
+            query : credentials => ({
+                url: '/Product/Create',
+                method: 'POST', 
+                credentials: 'include', 
+                body : {...credentials}
+            }), 
+            async onQueryStarted(arg, {dispatch, queryFulfilled}) {
+                try {
+                    // const {data} = await queryFulfilled
+                } catch (error) {
+                    console.log(error)
+                }
+            }
         })
     })
 })
 
 export const {
     useGetAllProductMutation, 
-    useGetAllProductByFilterMutation
+    useGetAllProductByFilterMutation, 
+    useAddProductMutation
 } = productApiSlice
