@@ -1,27 +1,36 @@
 import { useState } from "react";
 import Modal from "./Modal"
+import { useAddProductMutation } from "../../features/product/productApiSlice";
 import { uploadCloudinary } from "../../app/upload";
 
 const AddProductModal = ({ isOpen, closeModal }) => {
     const [imageUrls, setImageUrls] = useState([])
+
+    const LandSizeUnit = {
+        SquareMeter: 0,
+        Plot: 1
+    };
+
+    const [addProduct] =useAddProductMutation()
+
     const [formData, setFormData] = useState({
         name: '',
         location: '',
         description: '',
         size: '',
-        isAvailable: "true", //set default value to Yes
+        isAvailable: true, //set default value to Yes
         pricing: {
             price: '',
             survey: '',
             development: '',
-            unit: '0' //set the default value to squaremeter
+            unit: LandSizeUnit.SquareMeter //set the default value to squaremeter
         }
     });
 
     const [errors, setErrors] = useState({
         name: '',
         location: '',
-        images: '',
+        imageLinks: '',
         description: '',
         size: '',
         isAvailable: '',
@@ -61,14 +70,6 @@ const AddProductModal = ({ isOpen, closeModal }) => {
                 [name]: ''
             }))
         }
-        // setFormData({
-        //     ...formData,
-        //     [name]: value
-        // });
-        // setErrors({
-        //     ...errors,
-        //     [name]: ''
-        // });
     };
 
     const validate = () => {
@@ -85,8 +86,8 @@ const AddProductModal = ({ isOpen, closeModal }) => {
         if (!formData.isAvailable) {
             newErrors.isAvailable = "Required"
         }
-        if (imageUrls.length == 0) {
-            newErrors.images = "Please select at least one image"
+        if (imageUrls.length === 0) {
+            newErrors.imageLinks = "Please select at least one image"
         }
         if (!formData.size) {
             newErrors.size = 'Size is required';
@@ -107,10 +108,10 @@ const AddProductModal = ({ isOpen, closeModal }) => {
             newErrors.pricing = newErrors.pricing || {};
             newErrors.pricing.price = 'Field should contain only digits';
         }
-        if (!formData.pricing.unit) {
-            newErrors.pricing = newErrors.pricing || {};
-            newErrors.pricing.unit = 'Unit is required';
-        }
+        // if (!formData.pricing.unit) {
+        //     newErrors.pricing = newErrors.pricing || {};
+        //     newErrors.pricing.unit = 'Unit is required';
+        // }
         if (!formData.pricing.development) {
             newErrors.pricing = newErrors.pricing || {};
             newErrors.pricing.development = 'Development pricing is required';
@@ -140,21 +141,21 @@ const AddProductModal = ({ isOpen, closeModal }) => {
         if (selectedFiles.length > 0) {
             for (let i = 0; i < selectedFiles.length; i++) {
                 if (!validImageTypes.includes(selectedFiles[i].type)) {
-                    setErrors({ ...errors, images: 'Please select valid image files (jpeg, png, gif).' });
+                    setErrors({ ...errors, imageLinks: 'Please select valid image files (jpeg, png, gif).' });
                     return;
                 }
                 if (selectedFiles[i].size > maxSize) {
-                    setErrors({ ...errors, images: 'File size must be less than 2MB.' });
+                    setErrors({ ...errors, imageLinks: 'File size must be less than 2MB.' });
                     return;
                 }
             }
         }
-        // if(selectedFiles) {
-        //     const uploadUrls = await uploadImages(selectedFiles)
-        //     setImageUrls(uploadUrls)
-        // } 
+        if(selectedFiles) {
+            const uploadUrls = await uploadImages(selectedFiles)
+            setImageUrls(uploadUrls)
+        } 
         else {
-            setErrors({ ...errors, images: 'Please select at least one image' });
+            setErrors({ ...errors, imageLinks: 'Please select at least one image' });
         }
     }
 
@@ -172,20 +173,29 @@ const AddProductModal = ({ isOpen, closeModal }) => {
         return newData;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
         } else {
             const submittedData = {
-                ...formData, images: imageUrls
+                ...formData, imageLinks: imageUrls, 
+                pricing : {...formData.pricing, unit: Number(formData.pricing.unit)} //this line converts the unit from string to Number so it can be accepted on the BE
             };
             // Process form data
-            console.log(submittedData);
-            // Reset form
-            const updatedFormData = clearFormData(formData);
-            setFormData(updatedFormData);
+            console.log(submittedData); 
+            try {
+                const newProductData = await addProduct(submittedData).unwrap()
+                if(newProductData) {
+                     // Reset form
+                    const updatedFormData = clearFormData(formData);
+                    setFormData(updatedFormData);
+                }
+                console.log(newProductData)
+            } catch (error) {
+                console.log("add product failed")
+            }
         }
     };
 
@@ -288,9 +298,9 @@ const AddProductModal = ({ isOpen, closeModal }) => {
                             onChange={handleChange}
                            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-sm focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                         >
-                            {/* <option value="">Select gender</option> */}
-                            <option value="0">SquareMeter</option>
-                            <option value="1">Plot</option>
+                            {/* <option value="">Select Unit</option> */}
+                            <option checked value= {0}>SquareMeter</option>
+                            <option value={1}>Plot</option>
                         </select>
                         {errors.pricing?.unit && <p className="text-red-500 text-xs mt-1">{errors.pricing?.unit}</p>}
                     </div>
@@ -302,8 +312,8 @@ const AddProductModal = ({ isOpen, closeModal }) => {
                                 <input
                                     type="radio"
                                     name="isAvailable"
-                                    value="true"
-                                    checked={formData.isAvailable === 'true'}
+                                    value= {true}
+                                    checked={formData.isAvailable === true}
                                     onChange={handleChange}
                                     className="form-radio text-blue-500"
                                 />
@@ -313,8 +323,8 @@ const AddProductModal = ({ isOpen, closeModal }) => {
                                 <input
                                     type="radio"
                                     name="isAvailable"
-                                    value="false"
-                                    checked={formData.isAvailable === 'false'}
+                                    value= {false}
+                                    checked={formData.isAvailable === false}
                                     onChange={handleChange}
                                     className="form-radio text-blue-500"
                                 />

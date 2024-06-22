@@ -7,6 +7,8 @@ import RequireAuth from './features/auth/RequireAuth';
 import PersistLogin from './features/auth/PersistLogin';
 import LoginPage from './pages/LoginPage'
 import Product from './pages/Product';
+import ProductPage from './pages/ProductPage';
+import ProductDetail from './components/product/ProductDetail';
 
 function App() {
 
@@ -21,7 +23,13 @@ function App() {
 
             <Route index element={<Dashboard />} />
             <Route path='/dashboard/consultant' element={<Consultant />} />
-            <Route path='/dashboard/product' element={<Product />} />
+          
+            <Route path='/dashboard/product' element= {<ProductPage/>}>
+                <Route index element = {<Product />} />
+                <Route path='/dashboard/product/:Id' element= {<ProductDetail />}/>
+            </Route>
+
+            {/* <Route path='/dashboard/product' element={<Product/>} /> */}
             <Route path='/dashboard/client' element={<Client />} />
             
           </Route>

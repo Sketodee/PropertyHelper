@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { IoSearch } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
 import { useGetAllProductMutation, useGetAllProductByFilterMutation } from '../../features/product/productApiSlice';
+import { Link } from 'react-router-dom';
 
 import { IoLocationSharp } from "react-icons/io5";
 import { FaStar } from "react-icons/fa";
@@ -102,6 +103,7 @@ const [getAllProductByFilter] = useGetAllProductByFilterMutation()
       search(searchQuery, currentPage);
     }
   }, [currentPage])
+  
   return (
     <div >
       <div className="bg-white dark:bg-gray-800 py-3 rounded-md shadow mb-6 px-3">
@@ -119,10 +121,11 @@ const [getAllProductByFilter] = useGetAllProductByFilterMutation()
         {/* map through products here */}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {currentProducts.map((product, index) => (
-                 <div key={index} className="bg-gray-200 dark:bg-gray-800 rounded-2xl">
+                 <Link to={`/dashboard/product/:${product.id}`}  key={index} className="bg-gray-200 dark:bg-gray-800 rounded-2xl">
                  <div className="100 p-3 rounded-2xl md:flex">
                    <div className="md:w-1/2 h-60">
-                     <img src="/assets/2149661457-min.jpg" alt="Description" className="h-full w-full object-cover rounded-xl" />
+                     {/* <img src="/assets/2149661457-min.jpg" alt="Description" className="h-full w-full object-cover rounded-xl" /> */}
+                     <img src={product.imageLinks[0]} alt="Description" className="h-full w-full object-cover rounded-xl" />
                    </div>
                    <div className="md:w-1/2 h-full p-3 dark:text-white">
                      <h2 className="text-3xl font-bold">{product.name}</h2>
@@ -144,7 +147,7 @@ const [getAllProductByFilter] = useGetAllProductByFilterMutation()
                      </div>
                    </div>
                  </div>
-               </div>
+               </Link>
         ))}
         </div>
       </div>
