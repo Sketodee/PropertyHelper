@@ -70,6 +70,7 @@ const [getAllProductByFilter] = useGetAllProductByFilterMutation()
   const search = async (query, page) => {
     try {
       const credentials = {
+        Id: '',
         Name: query,
         PageNumber: page
       };
@@ -121,7 +122,7 @@ const [getAllProductByFilter] = useGetAllProductByFilterMutation()
         {/* map through products here */}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {currentProducts.map((product, index) => (
-                 <Link to={`/dashboard/product/:${product.id}`}  key={index} className="bg-gray-200 dark:bg-gray-800 rounded-2xl">
+                 <Link to={`/dashboard/product/${product.id}`}  key={index} className="bg-gray-200 dark:bg-gray-700 rounded-2xl">
                  <div className="100 p-3 rounded-2xl md:flex">
                    <div className="md:w-1/2 h-60">
                      {/* <img src="/assets/2149661457-min.jpg" alt="Description" className="h-full w-full object-cover rounded-xl" /> */}
@@ -131,11 +132,11 @@ const [getAllProductByFilter] = useGetAllProductByFilterMutation()
                      <h2 className="text-3xl font-bold">{product.name}</h2>
                      <p className='text-2xl pt-3'>N {product.pricing.total.toLocaleString()} <span className='text-sm'>per sqm</span> </p>
                      <div className='flex justify-between items-end py-2'>
-                       <div className='flex items-end  text-gray-500 font-light' >
+                       <div className='flex items-end  text-gray-400 font-light' >
                          <IoLocationSharp className='text-2xl ' />
                          <p className='text-sm'> {product.location}</p>
                        </div>
-                       <div className='flex items-center text-gray-500 font-light' >
+                       <div className='flex items-center text-gray-400 font-light' >
                          <FaStar className='text-xl text-yellow-500' />
                          <p className='text-xl ps-2'> 4.5</p>
                        </div>
@@ -143,7 +144,7 @@ const [getAllProductByFilter] = useGetAllProductByFilterMutation()
                      </div>
                      <div className="">
                        <p className='font-medium'>Description:</p>
-                       <p className='text-sm text-gray-600'> {product.description} </p>
+                       <p className='text-sm text-gray-400'> {product.description} </p>
                      </div>
                    </div>
                  </div>

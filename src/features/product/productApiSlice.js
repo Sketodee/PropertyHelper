@@ -24,8 +24,8 @@ export const productApiSlice = apiSlice.injectEndpoints({
 
         getAllProductByFilter: builder.mutation({
             query: credentials => {
-                const {Name, PageNumber} = credentials
-                const queryParams = new URLSearchParams({Name, PageNumber}).toString();
+                const {Id, Name, PageNumber} = credentials
+                const queryParams = new URLSearchParams({Id, Name, PageNumber}).toString();
                 return {
                     url: `/Product/GetAllProductsByFilter?${queryParams}`,
                     method: 'GET',
