@@ -20,6 +20,7 @@ const Carousel = ({slides}) => {
             style={{transform: `translateX(-${current*100}%)`}}
             >
                 {slides.map((s, i) => {
+                    // return <img className="object-cover rounded-sm" key={i} src={s}/>
                     return <img className="object-cover rounded-sm" key={i} src={s}/>
                 })}
             </div>

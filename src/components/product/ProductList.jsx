@@ -97,7 +97,6 @@ const [getAllProductByFilter] = useGetAllProductByFilterMutation()
 
   //make the first call to return the first page 
   useEffect(() => {
-    // fetchData();
     if (searchQuery.trim() === '') {
       fetchData(currentPage);
     } else {
@@ -108,6 +107,7 @@ const [getAllProductByFilter] = useGetAllProductByFilterMutation()
   return (
     <div >
       <div className="bg-white dark:bg-gray-800 py-3 rounded-md shadow mb-6 px-3">
+      <p className='text-customPrimary dark:text-white font-medium text-base '> All Products </p>
         <div className="max-w mx-auto flex justify-between items-center px-2 ">
           <label htmlFor="default-search" className="text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
           <div className="relative py-3 w-4/5">
@@ -129,22 +129,24 @@ const [getAllProductByFilter] = useGetAllProductByFilterMutation()
                      <img src={product.imageLinks[0]} alt="Description" className="h-full w-full object-cover rounded-xl" />
                    </div>
                    <div className="md:w-1/2 h-full p-3 dark:text-white">
-                     <h2 className="text-3xl font-bold">{product.name}</h2>
-                     <p className='text-2xl pt-3'>N {product.pricing.total.toLocaleString()} <span className='text-sm'>per sqm</span> </p>
-                     <div className='flex justify-between items-end py-2'>
-                       <div className='flex items-end  text-gray-400 font-light' >
+                     <h2 className="text-2xl font-light">{product.name}</h2>
+                     {/* <p className='text-2xl pt-3'>N {product.pricing.total.toLocaleString()} <span className='text-sm'>per sqm</span> </p> */}
+                     <div className='flex items-end py-2'>
+                       <div className='flex items-center font-light border-r border-gray-400 pe-2' >
                          <IoLocationSharp className='text-2xl ' />
                          <p className='text-sm'> {product.location}</p>
                        </div>
-                       <div className='flex items-center text-gray-400 font-light' >
+                       <div className='flex items-center text-gray-400 font-light border-r border-gray-400 ps-2 pe-2' >
                          <FaStar className='text-xl text-yellow-500' />
-                         <p className='text-xl ps-2'> 4.5</p>
+                         <p className='text-l ps-2'> 4.5</p>
                        </div>
-                       <p className='px-4 rounded-full text-white text-sm font-light bg-green-500'> {product.isAvailable ? 'Available' : 'Not Available'} </p>
+                       <div className='ps-2'>
+                         <p className='px-4 py-1 rounded-full text-white text-sm font-light bg-green-500'> {product.isAvailable ? 'Available' : 'Not Available'} </p>
+                       </div>
                      </div>
-                     <div className="">
-                       <p className='font-medium'>Description:</p>
-                       <p className='text-sm text-gray-400'> {product.description} </p>
+                     <div className="py-1">
+                       <p className='font-light'>Description:</p>
+                       <p className='text-xs font-light '> {product.description} </p>
                      </div>
                    </div>
                  </div>
