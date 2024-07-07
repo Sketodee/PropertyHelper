@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { IoLocationSharp } from "react-icons/io5";
 import { FaStar } from "react-icons/fa";
 
-const ProductList = ({openModal}) => {
+const ProductList = ({ openModal }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0)
   const [batch, setBatch] = useState(0)
@@ -15,7 +15,7 @@ const ProductList = ({openModal}) => {
   const [products, setProducts] = useState([])
 
   const [getAllProduct] = useGetAllProductMutation()
-const [getAllProductByFilter] = useGetAllProductByFilterMutation()
+  const [getAllProductByFilter] = useGetAllProductByFilterMutation()
 
   // const [getAllConsultant] = useGetAllConsultantMutation()
   // const [getAllConsultantByFilter] = useGetAllConsultantByFilterMutation()
@@ -103,11 +103,11 @@ const [getAllProductByFilter] = useGetAllProductByFilterMutation()
       search(searchQuery, currentPage);
     }
   }, [currentPage])
-  
+
   return (
     <div >
       <div className="bg-white dark:bg-gray-800 py-3 rounded-md shadow mb-6 px-3">
-      <p className='text-customPrimary dark:text-white font-medium text-base '> All Products </p>
+        <p className='text-customPrimary dark:text-white font-medium text-base '> All Products </p>
         <div className="max-w mx-auto flex justify-between items-center px-2 ">
           <label htmlFor="default-search" className="text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
           <div className="relative py-3 w-4/5">
@@ -121,37 +121,37 @@ const [getAllProductByFilter] = useGetAllProductByFilterMutation()
         </div>
         {/* map through products here */}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {currentProducts.map((product, index) => (
-                 <Link to={`/dashboard/product/${product.id}`}  key={index} className="bg-gray-200 dark:bg-gray-700 rounded-2xl">
-                 <div className="100 p-3 rounded-2xl md:flex">
-                   <div className="md:w-1/2 h-60">
-                     {/* <img src="/assets/2149661457-min.jpg" alt="Description" className="h-full w-full object-cover rounded-xl" /> */}
-                     <img src={product.imageLinks[0]} alt="Description" className="h-full w-full object-cover rounded-xl" />
-                   </div>
-                   <div className="md:w-1/2 h-full p-3 dark:text-white">
-                     <h2 className="text-2xl font-light">{product.name}</h2>
-                     {/* <p className='text-2xl pt-3'>N {product.pricing.total.toLocaleString()} <span className='text-sm'>per sqm</span> </p> */}
-                     <div className='flex items-end py-2'>
-                       <div className='flex items-center font-light border-r border-gray-400 pe-2' >
-                         <IoLocationSharp className='text-2xl ' />
-                         <p className='text-sm'> {product.location}</p>
-                       </div>
-                       <div className='flex items-center text-gray-400 font-light border-r border-gray-400 ps-2 pe-2' >
-                         <FaStar className='text-xl text-yellow-500' />
-                         <p className='text-l ps-2'> 4.5</p>
-                       </div>
-                       <div className='ps-2'>
-                         <p className='px-4 py-1 rounded-full text-white text-sm font-light bg-green-500'> {product.isAvailable ? 'Available' : 'Not Available'} </p>
-                       </div>
-                     </div>
-                     <div className="py-1">
-                       <p className='font-light'>Description:</p>
-                       <p className='text-xs font-light '> {product.description} </p>
-                     </div>
-                   </div>
-                 </div>
-               </Link>
-        ))}
+          {currentProducts.map((product, index) => (
+            <Link to={`/dashboard/product/${product.id}`} key={index} className="bg-gray-200 dark:bg-gray-700 rounded-2xl">
+              <div className="100 p-3 rounded-2xl md:flex">
+                <div className="md:w-1/2 h-60">
+                  {/* <img src="/assets/2149661457-min.jpg" alt="Description" className="h-full w-full object-cover rounded-xl" /> */}
+                  <img src={product.imageLinks[0]} alt="Description" className="h-full w-full object-cover rounded-xl" />
+                </div>
+                <div className="md:w-1/2 h-full p-3 dark:text-white">
+                  <h2 className="text-2xl font-light">{product.name}</h2>
+                  {/* <p className='text-2xl pt-3'>N {product.pricing.total.toLocaleString()} <span className='text-sm'>per sqm</span> </p> */}
+                  <div className='flex items-end py-2'>
+                    <div className='flex items-center font-light border-r border-gray-400 pe-2' >
+                      <IoLocationSharp className='text-2xl ' />
+                      <p className='text-sm'> {product.location}</p>
+                    </div>
+                    <div className='flex items-center text-gray-400 font-light border-r border-gray-400 ps-2 pe-2' >
+                      <FaStar className='text-xl text-yellow-500' />
+                      <p className='text-l ps-2'> 4.5</p>
+                    </div>
+                    <div className='ps-2'>
+                      <p className='px-4 py-1 rounded-full text-white text-sm font-light bg-green-500'> {product.isAvailable ? 'Available' : 'Not Available'} </p>
+                    </div>
+                  </div>
+                  <div className="py-1">
+                    <p className='font-light'>Description:</p>
+                    <p className='text-xs font-light '> {product.description.split(' ').slice(0, 30).join(' ') + '...'} </p>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
 
