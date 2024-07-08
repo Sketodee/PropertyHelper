@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import Modal from "./Modal";
+import { FaPlus } from "react-icons/fa6";
 import { useAddProductMutation } from "../../features/product/productApiSlice";
 import { uploadCloudinary } from "../../app/upload";
 import { MdDeleteSweep } from "react-icons/md";
@@ -378,10 +379,16 @@ const AddProductModal = ({ isOpen, closeModal }) => {
 
                 </div>
 
-                <p> Configure Pricing </p>
+                <div className="flex justify-between">
+                    <p className="pt-5 pb-2"> Configure Pricing </p>
+                    <button type="button" onClick={handleAddPricingGroup} className="mt-3 px-3  bg-blue-500 text-white rounded-sm hover:bg-blue-600 focus:outline-none">
+                    <FaPlus />
+                </button>
+                </div>
+                <hr />
 
                 {formData.pricing.map((pricingGroup, index) => (
-                    <div key={index} className="py-2 pe-2 border-t-2 border-b-2 border-gray-300 my-2">
+                    <div key={index} className="py-2 pe-2 border-b border-gray-300 my-2">
                         <div className="flex justify-between">
                             <div className="py-2 pe-2 basis-1/4">
                                 <label htmlFor={`pricing.${index}.price`} className="block text-sm text-gray-700 dark:text-gray-300">Price</label>
@@ -445,9 +452,9 @@ const AddProductModal = ({ isOpen, closeModal }) => {
                     </div>
                 ))}
 
-                <button type="button" onClick={handleAddPricingGroup} className="mt-2 px-3 py-2 bg-blue-500 text-white rounded-sm hover:bg-blue-600 focus:outline-none">
+                {/* <button type="button" onClick={handleAddPricingGroup} className="mt-2 px-3 py-2 bg-blue-500 text-white rounded-sm hover:bg-blue-600 focus:outline-none">
                     Add Pricing Group
-                </button>
+                </button> */}
 
 
                 <div className="py-2">

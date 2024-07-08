@@ -1,11 +1,12 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoSearch } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa6";
 import { formatDate } from '../../hooks/dateFormatter';
 import { useGetAllConsultantGroupMutation, useGetAllConsultantGroupByFilterMutation } from '../../features/consultantGroup/consultantGroupApiSlice';
 import { useNavigate } from 'react-router-dom';
 
 
-const ConsultantGroupList = () => {
+const ConsultantGroupList = ({ openModal }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0)
     const [batch, setBatch] = useState(0)
@@ -65,8 +66,8 @@ const ConsultantGroupList = () => {
             setConsultantGroupData(response.data.data)
             setTotalCount(response.data.totalCount)
         } catch (error) {
-        //    console.log(error)
-        } 
+            //    console.log(error)
+        }
     };
 
     const search = async (query, page) => {
@@ -80,8 +81,8 @@ const ConsultantGroupList = () => {
             setConsultantGroupData(response.data.data)
             setTotalCount(response.data.totalCount)
         } catch (error) {
-        //    console.log(error)
-        } 
+            //    console.log(error)
+        }
     }
 
     useEffect(() => {
@@ -95,7 +96,7 @@ const ConsultantGroupList = () => {
 
         return () => clearTimeout(delayDebounceFn);
 
-    }, [searchQuery,currentPage]);
+    }, [searchQuery, currentPage]);
 
     //make the first call to return the first page 
     useEffect(() => {
@@ -103,10 +104,10 @@ const ConsultantGroupList = () => {
         if (searchQuery.trim() === '') {
             fetchData(currentPage);
         } else {
-            search(searchQuery,currentPage);
+            search(searchQuery, currentPage);
         }
-    }, [currentPage]) 
-    
+    }, [currentPage])
+
 
     return (
         <>
@@ -114,13 +115,17 @@ const ConsultantGroupList = () => {
                 <div className="bg-white dark:bg-gray-800 py-3 rounded-md shadow mb-6 px-3">
                     <p className='text-customPrimary dark:text-white font-medium text-base '> All Consultant Groups </p>
 
-                    <div className="max-w mx-auto">
+                    <div className="max-w mx-auto flex justify-between items-center px-2">
                         <label htmlFor="default-search" className="text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-                        <div className="relative py-3">
+                        <div className="relative py-3 w-4/5">
                             <input type="search" id="default-search" value={searchQuery} onChange={handleSearchChange} className="block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Consultant Groups..." required />
                             <button onClick={search} className="text-white absolute end-1.5 top-3.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><IoSearch className='text-2xl text-white' /></button>
                         </div>
-                        
+                        <button onClick={openModal} className="bg-blue-700 text-white flex items-center  px-4 py-2 rounded">
+                            <FaPlus />
+                            <p className='ps-2 hidden sm:block'>Add New Group</p>
+                        </button>
+
                     </div>
 
                     <div className="flex flex-col">
@@ -132,23 +137,25 @@ const ConsultantGroupList = () => {
                                         <thead
                                             className="border-b border-neutral-200 ">
                                             <tr>
-                                                <th scope="col" className="px-6 py-4 font-light text-gray-400">#</th>
-                                                <th scope="col" className="px-6 py-4 font-light text-gray-400">Name</th>
-                                                <th scope="col" className="px-6 py-4 font-light text-gray-400">Email</th>
-                                                <th scope="col" className="px-6 py-4 font-light text-gray-400">Phone</th>
-                                                <th scope="col" className="px-6 py-4 font-light text-gray-400">Date Joined</th>
+                                                <th scope="col" className="px-6 py-4 font-light text-gray-400 w-1/12">#</th>
+                                                <th scope="col" className="px-6 py-4 font-light text-gray-400 w-3/12">Name</th>
+                                                <th scope="col" className="px-6 py-4 font-light text-gray-400 w-3/12">Email</th>
+                                                <th scope="col" className="px-6 py-4 font-light text-gray-400 1-2/12">Phone</th>
+                                                <th scope="col" className="px-6 py-4 font-light text-gray-400 w-2/12">Date Joined</th>
+                                                <th scope="col" className="px-6 py-4 font-light text-gray-400 w-1/12"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {
                                                 currentGroup.map((group, index) => (
-                                                    <tr key={index} onClick={() => handleRowClick(group.id)} 
-                                                        className="border-b border-neutral-200 bg-black/[0.02] dark:border-white/10 cursor-pointer">
+                                                    <tr key={index} 
+                                                        className="border-b border-neutral-200 bg-black/[0.02] dark:border-white/10">
                                                         <td className="whitespace-nowrap px-6 py-4 font-medium">{index + indexOfFirstGroup + 1}</td>
                                                         <td className="whitespace-nowrap px-6 py-4">{group.name}</td>
                                                         <td className="whitespace-nowrap px-6 py-4">{group.email}</td>
                                                         <td className="whitespace-nowrap px-6 py-4">{group.phoneNumber}</td>
                                                         <td className="whitespace-nowrap px-6 py-4">{formatDate(group.createdOn)}</td>
+                                                        <td className="whitespace-nowrap px-6 py-4"><button onClick={() => handleRowClick(group.id)} className="bg-blue-700 text-white flex items-center  px-4 py-2 rounded">View</button></td>
                                                     </tr>
                                                 ))
                                             }
