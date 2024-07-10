@@ -321,7 +321,7 @@ const AddProductModal = ({ isOpen, closeModal }) => {
                     {errors.imageLinks && <p className="text-red-500 text-xs mt-1">{errors.imageLinks}</p>}
                 </div>
 
-                <div className="py-2 pe-2">
+                <div className="py-2">
                     <label htmlFor="description" className="block text-sm text-gray-700 dark:text-gray-300">Description</label>
                     <textarea
                         id="description"
