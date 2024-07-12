@@ -1,40 +1,57 @@
 import React, { useState, useEffect } from 'react'
 import Modal from '../product/Modal'
+import { IoIosClose } from "react-icons/io";
 import { useGetAllConsultantByFilterMutation } from '../../features/consultant/consultantApiSlice'
 
 const AddConsultantGroupModal = ({ isOpen, closeModal }) => {
-const [searchQuery, setSearchQuery] = useState("")
-const [fetchedMembers, setFetchedMembers] = useState([])
-const [getAllConsultantByFilter] = useGetAllConsultantByFilterMutation()
+  const [searchQuery, setSearchQuery] = useState("")
+  const [fetchedMembers, setFetchedMembers] = useState([])
+  const [selectedMembers, setSelectedMembers] = useState([])
+  const [getAllConsultantByFilter] = useGetAllConsultantByFilterMutation()
 
   const [formData, setFormData] = useState({
     name: '',
-    email: '', 
+    email: '',
     accountName: '',
-    bankProvider: '', 
-    accountDetails:'', 
+    bankProvider: '',
+    accountDetails: '',
     referrerId: '',
-    phoneNumber: '', 
-    accountManagerId: '', 
-    description: '', 
+    phoneNumber: '',
+    accountManagerId: '',
+    description: '',
   });
 
   const [errors, setErrors] = useState({
     name: '',
-    email: '', 
+    email: '',
     accountName: '',
-    bankProvider: '', 
-    accountDetails:'', 
+    bankProvider: '',
+    accountDetails: '',
     referrerId: '',
-    phoneNumber: '', 
-    accountManagerId: '', 
-    description: '', 
+    phoneNumber: '',
+    accountManagerId: '',
+    description: '',
   });
 
-const handleQueryChange = (e) => {
-  setSearchQuery(e.target.value)
-  console.log(searchQuery)
-}
+  const handleQueryChange = (e) => {
+    setSearchQuery(e.target.value)
+  }
+
+
+  
+  const handleSelectedMembers = (item) => {
+    if (!selectedMembers.some(member => member.id === item.id)) {
+      setSelectedMembers((prevMembers) => [
+        ...prevMembers, 
+        { name: item.fullName, id: item.id }
+      ]);
+    }
+  };
+
+  const isMemberSelected = (id) => {
+    return selectedMembers.some(member => member.id === id);
+  };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,32 +89,31 @@ const handleQueryChange = (e) => {
 
   const search = async (query) => {
     try {
-        const credentials = {
-            queryParam: query,
-            PageNumber: 1
-        };
-        const response = await getAllConsultantByFilter(credentials).unwrap()
-        console.log(response.data.data)
-        setFetchedMembers(response.data.data)
-        // setTotalCount(response.data.totalCount)
+      const credentials = {
+        queryParam: query,
+        PageNumber: 1
+      };
+      const response = await getAllConsultantByFilter(credentials).unwrap()
+      setFetchedMembers(response.data.data)
+      // setTotalCount(response.data.totalCount)
     } catch (error) {
-    //    console.log(error)
-    } 
-}
+      //    console.log(error)
+    }
+  }
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-        if (searchQuery) {
-            // console.log(searchQuery)
-            search(searchQuery)
-        } else {
-          setFetchedMembers([])
-        }
+      if (searchQuery) {
+        // console.log(searchQuery)
+        search(searchQuery)
+      } else {
+        setFetchedMembers([])
+      }
     }, 2000);
 
     return () => clearTimeout(delayDebounceFn);
 
-}, [searchQuery]);
+  }, [searchQuery]);
 
   return (
     <Modal isOpen={isOpen} onClose={closeModal}>
@@ -233,16 +249,29 @@ const handleQueryChange = (e) => {
             className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-sm focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
           />
           {errors.membersId && <p className="text-red-500 text-xs mt-1">{errors.membersId}</p>}
-          {fetchedMembers.length > 0 && (
-               <ul className="dropdown bg-white border border-gray-300 rounded-md mt-2 p-2 max-h-48 overflow-y-auto">
-               {fetchedMembers.map((item, index) => (
-                <li key={index} className="p-2 hover:bg-gray-100 cursor-pointer">
-                  {item.fullName}
-                </li>
-          ))}
-             </ul>
+
+          {selectedMembers.length > 0 && (
+            <div className='flex flex-wrap py-2'>
+              {selectedMembers.map((member, index) => (
+                <div key={index} className='flex items-center bg-sky-400 text-white me-2 px-3 py-2 rounded-full'>
+                  <p className='' >{member.name} </p>
+                  <IoIosClose className='text-2xl'/>
+                </div>
+              ))}
+            </div>
           )}
-         
+
+          {fetchedMembers.length > 0 && (
+            <ul className="dropdown dark:bg-gray-700 dark:border-gray-600 dark:text-white bg-white border border-gray-300 rounded-md mt-2 p-2 max-h-48 overflow-y-auto">
+              {fetchedMembers.map((item, index) => (
+                <option key={index} onClick={() => handleSelectedMembers(item)} 
+                  className={`p-2 cursor-pointer text-sm font-light ${isMemberSelected(item.id) ? 'text-red-600 cursor-not-allowed' : 'hover:bg-gray-200 hover:bg-gray-500'}`}>
+                  {item.fullName}
+                </option>
+              ))}
+            </ul>
+          )}
+
         </div>
 
         <div className="py-2">

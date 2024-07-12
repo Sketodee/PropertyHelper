@@ -162,10 +162,10 @@ const ConsultantList = () => {
                     </div>
                     <div className="flex">
                         {[...Array(10)].map((_, index) => (
-                            <button disabled={totalCount < (index + (10 * batch)) * 10} key={index} onClick={() => paginate(index + 1 + (10 * batch))}
+                            <button disabled={totalCount -1 < (index + (10 * batch)) * 10} key={index} onClick={() => paginate(index + 1 + (10 * batch))}
                                 className={`leading-none cursor-pointer pt-3 mr-0 sm:mr-4 px-1 sm:px-0
                                 ${currentPage === index + 1 + (10 * batch) ? 'dark:text-gray-200 text-gray-700 font-bold' : 'dark:text-gray-400 text-gray-500 font-light'}
-                                      ${totalCount < (index + (10 * batch)) * 10 ? 'dark:text-gray-600 text-gray-300 text-sm' : ' '}
+                                      ${totalCount -1 < (index + (10 * batch)) * 10 ? 'dark:text-gray-600 text-gray-300 text-sm' : ' '}
                                 `}>
                                 {index + 1 + (10 * batch)}
                             </button>
