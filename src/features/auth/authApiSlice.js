@@ -66,6 +66,21 @@ export const authApiSlice = apiSlice.injectEndpoints({
                     console.log(error)
                 }
             }
+        }), 
+
+        getAllAdmins : builder.mutation({
+            query: () => ({
+                url: '/Auth/GetAllAdmins', 
+                method: 'GET',
+                credentials: 'include', 
+            }), 
+            async onQueryStarted(arg, {dispatch, queryFulfilled}) {
+                try {
+                    // const {data} = await queryFulfilled
+                } catch (error) {
+                    console.log(error)
+                }
+            }
         })
     })
 })
@@ -73,5 +88,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
 export const {
     useLoginMutation,
     useRefreshMutation, 
-    useGetuserMutation
+    useGetuserMutation, 
+    useGetAllAdminsMutation
 } = authApiSlice

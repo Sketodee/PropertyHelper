@@ -58,6 +58,22 @@ export const consultantGroupApiSlice = apiSlice.injectEndpoints({
                     console.log(error)
                 }
             }
+        }), 
+
+        createConsultantGroup : builder.mutation({
+            query : credentials => ({
+                url: '/ConsultantGroup/Create',
+                method: 'POST', 
+                credentials: 'include', 
+                body : {...credentials}
+            }), 
+            async onQueryStarted(arg, {dispatch, queryFulfilled}) {
+                try {
+                    // const {data} = await queryFulfilled
+                } catch (error) {
+                    console.log(error)
+                }
+            }
         })
 
     })
@@ -66,5 +82,6 @@ export const consultantGroupApiSlice = apiSlice.injectEndpoints({
 export const {
     useGetAllConsultantGroupMutation, 
     useGetAllConsultantGroupByFilterMutation, 
-    useGetMembersOfConsultantGroupMutation
+    useGetMembersOfConsultantGroupMutation, 
+    useCreateConsultantGroupMutation
 } = consultantGroupApiSlice

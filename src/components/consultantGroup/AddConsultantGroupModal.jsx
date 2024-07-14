@@ -2,12 +2,18 @@ import React, { useState, useEffect } from 'react'
 import Modal from '../product/Modal'
 import { IoIosClose } from "react-icons/io";
 import { useGetAllConsultantByFilterMutation } from '../../features/consultant/consultantApiSlice'
+import { useCreateConsultantGroupMutation } from '../../features/consultantGroup/consultantGroupApiSlice';
+import { useGetAllAdminsMutation } from '../../features/auth/authApiSlice';
 
 const AddConsultantGroupModal = ({ isOpen, closeModal }) => {
   const [searchQuery, setSearchQuery] = useState("")
   const [fetchedMembers, setFetchedMembers] = useState([])
   const [selectedMembers, setSelectedMembers] = useState([])
+  const [adminMembers, setAdminMembers] = useState([])
+
   const [getAllConsultantByFilter] = useGetAllConsultantByFilterMutation()
+  const [createConsultantGroup] = useCreateConsultantGroupMutation()
+  const [getAllAdmins] = useGetAllAdminsMutation()
 
   const [formData, setFormData] = useState({
     name: '',
@@ -27,6 +33,7 @@ const AddConsultantGroupModal = ({ isOpen, closeModal }) => {
     accountName: '',
     bankProvider: '',
     accountDetails: '',
+    membersId: '',
     referrerId: '',
     phoneNumber: '',
     accountManagerId: '',
@@ -37,15 +44,14 @@ const AddConsultantGroupModal = ({ isOpen, closeModal }) => {
     setSearchQuery(e.target.value)
   }
 
-
-  
   const handleSelectedMembers = (item) => {
     if (!selectedMembers.some(member => member.id === item.id)) {
       setSelectedMembers((prevMembers) => [
-        ...prevMembers, 
+        ...prevMembers,
         { name: item.fullName, id: item.id }
       ]);
     }
+    setErrors({ ...errors, membersId: '' });
   };
 
   const isMemberSelected = (id) => {
@@ -65,6 +71,19 @@ const AddConsultantGroupModal = ({ isOpen, closeModal }) => {
     });
   };
 
+  const clearFormData = (data) => {
+    const resetData = {};
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        resetData[key] = '';
+      }
+    }
+    setSelectedMembers([])
+    setFetchedMembers([])
+    setAdminMembers([])
+    return resetData;
+  };
+
   const validate = () => {
     const newErrors = {};
     if (!formData.name) {
@@ -72,7 +91,33 @@ const AddConsultantGroupModal = ({ isOpen, closeModal }) => {
     }
     if (!formData.email) {
       newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email address is invalid';
     }
+    if (!formData.accountName) {
+      newErrors.accountName = 'Account Name is required'
+    }
+    if (!formData.bankProvider) {
+      newErrors.bankProvider = 'Bank Provider is required'
+    }
+    if (!formData.accountDetails) {
+      newErrors.accountDetails = 'Account Details is required'
+    }
+    if (!formData.phoneNumber) {
+      newErrors.phoneNumber = 'Phone number is required'
+    } else if (!/^\d+$/.test(formData.phoneNumber)) {
+      newErrors.phoneNumber = 'Phone number is invalid';
+    }
+    if (!formData.accountManagerId) {
+      newErrors.accountManagerId = 'Account manager ID is required';
+    }
+    if (!formData.description) {
+      newErrors.description = 'Description is required';
+    }
+    if (selectedMembers.length === 0) {
+      newErrors.membersId = 'No members selected'
+    }
+
     return newErrors;
   };
 
@@ -83,7 +128,21 @@ const AddConsultantGroupModal = ({ isOpen, closeModal }) => {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
-      console.log(formData.membersId)
+      const submittedData = {
+        ...formData,
+        membersId: selectedMembers.map(obj => obj.id), 
+        referrerId: formData.referrerId || null
+    };
+    try {
+      const newGroupData = await createConsultantGroup(submittedData).unwrap();
+      if (newGroupData) {
+        const updatedData = clearFormData(formData)
+        setFormData(updatedData)
+      }
+      closeModal()
+  } catch (error) {
+      console.log("add product failed");
+  }
     }
   }
 
@@ -114,6 +173,16 @@ const AddConsultantGroupModal = ({ isOpen, closeModal }) => {
     return () => clearTimeout(delayDebounceFn);
 
   }, [searchQuery]);
+
+  const fetchAdmins = async () => {
+    try {
+      const response = await getAllAdmins().unwrap()
+      setAdminMembers(response.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 
   return (
     <Modal isOpen={isOpen} onClose={closeModal}>
@@ -225,14 +294,20 @@ const AddConsultantGroupModal = ({ isOpen, closeModal }) => {
 
           <div className="py-2 ps-2 basis-1/2">
             <label htmlFor="accountManagerId" className="block text-sm text-gray-700 dark:text-gray-300"> Account Manager </label>
-            <input
-              type="text"
+            <select
+              // type="text"
               id="accountManagerId"
               name="accountManagerId"
               value={formData.accountManagerId}
+              onClick={fetchAdmins}
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-sm focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-            />
+            > 
+            <option value="" disabled>Select a user</option>
+            {adminMembers.length > 0 && adminMembers.map(option => (
+            <option key={option.id} value={option.id}>{option.fullName}</option>
+          ))}
+            </select>
             {errors.accountManagerId && <p className="text-red-500 text-xs mt-1">{errors.accountManagerId}</p>}
           </div>
         </div>
@@ -255,7 +330,7 @@ const AddConsultantGroupModal = ({ isOpen, closeModal }) => {
               {selectedMembers.map((member, index) => (
                 <div key={index} className='flex items-center bg-sky-400 text-white me-2 px-3 py-2 rounded-full'>
                   <p className='' >{member.name} </p>
-                  <IoIosClose className='text-2xl'/>
+                  <IoIosClose className='text-2xl' />
                 </div>
               ))}
             </div>
@@ -264,7 +339,7 @@ const AddConsultantGroupModal = ({ isOpen, closeModal }) => {
           {fetchedMembers.length > 0 && (
             <ul className="dropdown dark:bg-gray-700 dark:border-gray-600 dark:text-white bg-white border border-gray-300 rounded-md mt-2 p-2 max-h-48 overflow-y-auto">
               {fetchedMembers.map((item, index) => (
-                <option key={index} onClick={() => handleSelectedMembers(item)} 
+                <option key={index} onClick={() => handleSelectedMembers(item)}
                   className={`p-2 cursor-pointer text-sm font-light ${isMemberSelected(item.id) ? 'text-red-600 cursor-not-allowed' : 'hover:bg-gray-200 hover:bg-gray-500'}`}>
                   {item.fullName}
                 </option>
