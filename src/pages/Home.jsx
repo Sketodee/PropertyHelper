@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
 import Login from '../components/Auth/Login'
 import Register from '../components/Auth/Register'
+import { Link } from 'react-router-dom'
 
 const Home = () => {
-    const [toggle, setToggle] = useState(true)
+    // const [toggle, setToggle] = useState(true)
 
     return (
         <div className='satoshi'>
@@ -14,18 +15,19 @@ const Home = () => {
                     </h1>
                 </div>
                 <div className='pe-md-12 pe-6'>
-                    <p onClick={()=> setToggle(!toggle)} className='cursor-pointer bg-blue-500 py-2 px-5 text-white rounded'>{toggle ? "Register" : "Login"}</p>
+                    <Link to={'/login'} className='cursor-pointer bg-blue-500 py-2 px-5 text-white rounded'> Login</Link>
                 </div>
             </div>
 
             <div className='flex flex-row items-center justify-between'>
                 <div className='basis-1/2 hidden md:flex items-center justify-center py-20 px-20'>
                     <div className='w-96 '>
-                        <img className='h-full w-full rounded-br-[200px]' src="/assets/2149661457.jpg" alt="" />
+                        <img className='h-full w-full rounded-br-[200px]' src="/assets/2149661457-min.jpg" alt="" />
                     </div>
                 </div>
                 <div className='basis-full sm:basis-1/2 py-md-10 px-md-20 py-2 px-6 '>
-                    {toggle ? <Login /> : <Register />}
+                    <Register />
+                    {/* {toggle ? <Login /> : <Register />} */}
                 </div>
             </div>
 

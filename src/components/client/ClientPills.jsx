@@ -21,7 +21,7 @@ const ClientPills = () => {
             <div className='w-10 h-10 bg-red-300 rounded-full flex justify-center items-center'>
                 <FaUserGroup className='text-1xl text-white' />
             </div>
-            <p className='text-3xl font-bold pt-3 text-zinc-700'> 1899</p>
+            <p className='text-4xl font-medium pt-3 text-zinc-700'> 1899</p>
             <p className='text-xs text-gray-400 pb-6'>Total Consultants</p>
         </div>
 
@@ -29,7 +29,7 @@ const ClientPills = () => {
             <div className='w-10 h-10 bg-indigo-300 rounded-full flex justify-center items-center'>
                 <PiUsersThreeFill className='text-1xl text-white' />
             </div>
-            <p className='text-3xl font-bold pt-3 text-zinc-700'> 187</p>
+            <p className='text-4xl font-medium pt-3 text-zinc-700'> 187</p>
             <p className='text-xs text-gray-400 pb-6'>New This Month</p>
         </div>
 

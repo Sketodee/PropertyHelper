@@ -4,8 +4,8 @@ import { PiUsersThreeFill } from "react-icons/pi";
 
 const ConsultantPills = () => {
     return (
-        <div className="bg-white py-3 rounded-md shadow mb-6 px-3">
-            <p className='text-customPrimary font-medium text-base '>Consultant Summary</p>
+        <div className="bg-white dark:bg-gray-800 py-3 rounded-md shadow mb-6 px-3">
+            <p className='text-customPrimary dark:text-white font-medium text-base '>Consultant Summary</p>
             <p className='text-xs text-gray-400 pb-6'>Today's Summary</p>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4 ">
 
@@ -21,7 +21,7 @@ const ConsultantPills = () => {
                     <div className='w-10 h-10 bg-orange-300 rounded-full flex justify-center items-center'>
                         <FaUserGroup className='text-1xl text-white' />
                     </div>
-                    <p className='text-3xl font-bold pt-3 text-zinc-700'> 1899</p>
+                    <p className='text-4xl font-medium pt-3 text-zinc-700'> 1899</p>
                     <p className='text-xs text-gray-400 pb-6'>Total Consultants</p>
                 </div>
 
@@ -29,7 +29,7 @@ const ConsultantPills = () => {
                     <div className='w-10 h-10 bg-green-300 rounded-full flex justify-center items-center'>
                         <PiUsersThreeFill className='text-1xl text-white' />
                     </div>
-                    <p className='text-3xl font-bold pt-3 text-zinc-700'> 187</p>
+                    <p className='text-4xl font-medium pt-3 text-zinc-700'> 187</p>
                     <p className='text-xs text-gray-400 pb-6'>New This Month</p>
                 </div>
 
